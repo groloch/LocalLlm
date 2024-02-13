@@ -1,12 +1,11 @@
 from llama_cpp import Llama
 
-from . import pre_prompt, pre_prompt_format, user_input
 from .chatutils import _Preprompt, _PrepromptFormat, _UserInput
 
 
-class ChatHistory:
+class _ChatHistory:
     def __init__(self) -> None:
-        self.system_message = pre_prompt()
+        self.system_message = _Preprompt()
         self.chat_messages = []
 
     def add_preprompt(self, pp: _Preprompt):
@@ -37,7 +36,7 @@ class LLMChat:
                          chat_format=chat_format, 
                          n_gpu_layers=n_gpu_layers,
                          n_ctx=n_ctx)
-        self.chat_history = ChatHistory()
+        self.chat_history = _ChatHistory()
 
     def stream_answer(self, print_fn):
         streamer = self.llm.create_chat_completion(self.chat_history.get_llm_input(),
@@ -55,6 +54,9 @@ class LLMChat:
             'role': 'assistant',
             'content': generated_text
         })
+
+    def reset(self):
+        self.chat_history = _ChatHistory()
 
     def __rshift__(self, other):
         if isinstance(other, _Preprompt):
