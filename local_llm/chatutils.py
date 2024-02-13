@@ -10,7 +10,7 @@ class _Preprompt:
     def format(self, format: _PrepromptFormat):
         self.value = self.value.format(**format.format_specs)
 
-    def __add__(self, other: _Preprompt):
+    def __add__(self, other):
         return _Preprompt(self.value + other.value)       
 
 class _UserInput:
