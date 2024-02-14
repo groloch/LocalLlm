@@ -12,10 +12,10 @@ To install this repository, you can simply clone it:\
 
 ## How to use ##
 
-The notebook [here]('notebook/local_llm_chat.ipynb) shows a straightforward way to use this repository !\
+The notebook [here](notebook/local_llm_chat.ipynb) shows a straightforward way to use this repository !\
 You can send messages to LLMs using the `<<` operator.\
 You can generate text using the `>>` operator.
 
 ## Host you own chat assistant for free! ##
 
-You can simply download the notebook [here]('notebook/local_llm_chat.ipynb'), import it on colab and run it !
+You can simply download the notebook [here](notebook/local_llm_chat.ipynb), import it on colab and run it !
