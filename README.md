@@ -1,6 +1,7 @@
 # LocalLlm #
 
-This python repository is meant to simplify the setup of AI assistants.
+This python repository is meant to simplify the setup of AI assistants.\
+This is still in a very early phase of development and not many functionalities are implemented.
 
 ## Installation ## 
 
@@ -11,6 +12,10 @@ To install this repository, you can simply clone it:\
 
 ## How to use ##
 
-The notebook `notebook/local_llm_chat.ipynb` shows a straightforward way to use this repository !\
+The notebook [here]('notebook/local_llm_chat.ipynb) shows a straightforward way to use this repository !\
 You can send messages to LLMs using the `<<` operator.\
 You can generate text using the `>>` operator.
+
+## Host you own chat assistant for free! ##
+
+You can simply download the notebook [here]('notebook/local_llm_chat.ipynb'), import it on colab and run it !
