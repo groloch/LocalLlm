@@ -16,6 +16,8 @@ The notebook [here](notebook/local_llm_chat.ipynb) shows a straightforward way t
 You can send messages to LLMs using the `<<` operator.\
 You can generate text using the `>>` operator.
 
+If you want to test other models, you can find plenty [there](https://huggingface.co/TheBloke)
+
 ## Host you own chat assistant for free! ##
 
 You can simply download the notebook [here](notebook/local_llm_chat.ipynb), import it on colab and run it !
