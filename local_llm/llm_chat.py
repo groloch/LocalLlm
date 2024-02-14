@@ -15,7 +15,7 @@ class _ChatHistory:
         self.system_message.format(format)
 
     def add_chat_message(self, message: dict):
-        if len(self.chat_messages) > 0 and self.chat_messages[-1]['user'] == message['user']:
+        if len(self.chat_messages) > 0 and self.chat_messages[-1]['role'] == message['role']:
             self.chat_messages[-1]['content'] += message['content']
         else:
             self.chat_messages.append(message)
@@ -58,7 +58,7 @@ class LLMChat:
     def reset(self):
         self.chat_history = _ChatHistory()
 
-    def __rshift__(self, other):
+    def __lshift__(self, other):
         if isinstance(other, _Preprompt):
             self.chat_history.add_preprompt(other)
         elif isinstance(other, _PrepromptFormat):
@@ -69,7 +69,7 @@ class LLMChat:
                 'content': other.message
             })
 
-    def __lshift__(self, other):
+    def __rshift__(self, other):
         if callable(other):
             print_fn = other
         else:
