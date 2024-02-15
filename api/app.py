@@ -12,8 +12,12 @@ class ApiHost:
             return 'Hello, this is hosted on google colab!'
         
         @self.app.route('/api')
-        def home():
+        def api():
             return 'Api page, to be used by clients only !'
 
     def run(self):
         self.app.run()
+
+if __name__ == '__main__':
+    host = ApiHost()
+    host.run()
