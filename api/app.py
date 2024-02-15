@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, jsonify
 from flask_cloudflared import run_with_cloudflared
 
 
@@ -14,9 +14,9 @@ class ApiHost:
         
         @self.app.route('/api', methods=['POST'])
         def api():
-            print('Post request received !')
-            print('JSON', request.json)
-            print('FORM', request.form)
+            received_data = request.json
+            print('Data received!', received_data, sep='\n')
+            return jsonify({}), 200
 
     def run(self):
         self.app.run()
