@@ -13,6 +13,7 @@ class ApiHost:
         
         @self.app.route('/api', methods=['POST'])
         def api(data):
+            print('Post request received !')
             print(data)
 
     def run(self):
