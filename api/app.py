@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import request
 from flask_cloudflared import run_with_cloudflared
 
 
@@ -12,9 +13,10 @@ class ApiHost:
             return 'Hello, this is hosted on google colab!'
         
         @self.app.route('/api', methods=['POST'])
-        def api(data):
+        def api():
             print('Post request received !')
-            print(data)
+            print('JSON', request.json)
+            print('FORM', request.form)
 
     def run(self):
         self.app.run()
