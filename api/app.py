@@ -1,17 +1,22 @@
 import string
 import random
-from IPython.display import HTML, display
 
 from flask import Flask
 from flask import request, jsonify
 from flask_cloudflared import run_with_cloudflared
 
+from . import Query, create_model
+
 
 class ApiHost:
-    def __init__(self, notebook=False) -> None:
+    def __init__(self, use_token=True) -> None:
         self.app = Flask(__name__)
         run_with_cloudflared(self.app)
-        self.notebook = notebook
+        self.use_token = use_token
+        self.access_token = None
+        if self.use_token:
+            self.generate_access_token()
+        self.model = None
 
         @self.app.route('/')
         def home():
@@ -20,14 +25,22 @@ class ApiHost:
         @self.app.route('/api', methods=['POST'])
         def api():
             received_data = request.json
-            print('Data received!', received_data, sep='\n')
-            if self.notebook:
+
+            if self.use_token:
                 if received_data['token'] != self.access_token:
                     return jsonify({'error': 'wrong token'}), 403
-            return jsonify({}), 200
-        
-        self.access_token = None
+                
+            query = Query(received_data)
+            if len(query.errors != 0):
+                return jsonify(query.errors), 400
+            
+            if self.model != query.model:
+                self.model = create_model(query)
 
+            answer = self.model.generate_answer(query)
+
+            return jsonify({'answer': answer}), 200
+        
     def run(self):
         self.app.run()
 
@@ -36,16 +49,8 @@ class ApiHost:
 
         self.access_token = ''.join(random.choices(chars, k=20))
 
-        html_code = f''
-        f'<input type="text" value="{self.access_token}"> id="access_token" '
-        f'readonly style="border: none; background-color: white;>'
-        f'<button onclick="navigator.clipboard.writeText(document.getElementById("access_token").value)">'
-        f'  Copy to clipboard'
-        f'</button>'
-
-        display(HTML(html_code))
-        
-
+        print('Access token for the current session:', self.access_token)
+    
 
 if __name__ == '__main__':
     host = ApiHost()
