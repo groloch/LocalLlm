@@ -4,8 +4,8 @@ from huggingface_hub import hf_hub_download
 
 class _ModelWrapper:
     def __init__(self, repo_id: str, file_name: str) -> None:
-        self.repo_id = None
-        self.file_name = None
+        self.repo_id = repo_id
+        self.file_name = file_name
         self.llm = None
 
     def download_model(self):
@@ -111,12 +111,12 @@ class TextGenerationModel(_ModelWrapper):
         return outputs
 
     def load_model(self, query: Query):
-        if query['model_kwargs']['use_gpu']:
+        if query.model_kwargs['use_gpu']:
             n_gpu_layers = -1
         else:
             n_gpu_layers = 0
-        ctx_length = query['model_kwargs']['ctx_length']
-        chat_format = query['model_kwargs']['chat_format']
+        ctx_length = query.model_kwargs['ctx_length']
+        chat_format = query.model_kwargs['chat_format']
 
         self.llm = Llama(self.model_path,
                            n_gpu_layers=n_gpu_layers,
@@ -133,5 +133,5 @@ def create_model(query: Query):
             return None
             
     model.download_model()
-    model.load_model()
+    model.load_model(query)
     return model
