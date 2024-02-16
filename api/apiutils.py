@@ -80,7 +80,7 @@ class Query:
 
 class TextGenerationModel(_ModelWrapper):
     def __init__(self, repo_id: str = None, file_name: str = None) -> None:
-        super.__init__(repo_id, file_name)
+        super().__init__(repo_id, file_name)
 
     def generate_answer(self, query: Query):
         genargs = query.generation_kwargs

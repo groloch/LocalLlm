@@ -31,7 +31,7 @@ class ApiHost:
                     return jsonify({'error': 'wrong token'}), 403
                 
             query = Query(received_data)
-            if len(query.errors != 0):
+            if len(query.errors) != 0:
                 return jsonify(query.errors), 400
             
             if self.model != query.model:
