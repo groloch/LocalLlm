@@ -17,6 +17,12 @@ class _ModelWrapper:
     def load_model(self):
         pass
 
+    def __eq__(self, model_path: tuple):
+        return len(model_path) == 2 and \
+               self.repo_id == model_path[0] and \
+               self.file_name == model_path[1]
+
+
 class ModelInput:
     def __init__(self, inputs: str | list) -> None:
         if isinstance(inputs, str):
@@ -25,11 +31,6 @@ class ModelInput:
         if isinstance(inputs, list):
             self.type = 'chat'
             self.content = inputs
-    
-    def __eq__(self, model_path: tuple):
-        return len(model_path) == 2 and \
-               self.repo_id == model_path[0] and \
-               self.file_name == model_path[1]
 
 
 class Query:
