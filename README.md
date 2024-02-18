@@ -8,8 +8,8 @@ This repository is in an early phase of development and is still lacking some do
 
 ## Installation ## 
 
-Before using this repository, make sure you have `llama-cpp-python` installed and built in your environment !\
-To install `llama-cpp-python`, refer to [the official guide](https://github.com/abetlen/llama-cpp-python). \
+Before using this repository, make sure you have llama-cpp-python installed and built in your environment !\
+To install llama-cpp-python, refer to [the official guide](https://github.com/abetlen/llama-cpp-python). \
 To install this repository, you can simply clone it:\
 `git clone https://github.com/groloch/LocalLlm.git`
 
