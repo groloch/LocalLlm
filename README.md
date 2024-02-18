@@ -17,7 +17,7 @@ To install this repository, you can simply clone it:\
 
 On a general note, before creating your own application using this repository, you should take a look at [exmaples](examples/), this folder contains tutorials and drop-in solutions how to setup different projects !\
 
-This project is currently based on `llama-cpp-python` and the only supported file format for models is the GGUF format.\
+This project is currently based on llama-cpp-python and the only supported file format for models is the GGUF format.\
 You can find plenty of GGUF models [here](https://huggingface.co/TheBloke)
 
 
@@ -27,7 +27,7 @@ The [local chat](examples/local_chat/) feature allows you to host a chat assista
 Read the documentation in the examples and you should be ready to go !\
 The examples contain tutorials and a drop-in solution!
 
-### API host """
+### API host ###
 
 The [api host](examples/api_host/) feature allows you to host a LLM-power API on web-based services like [Colaboratory](https://colab.research.google.com/). \
 Read the documentation in the examples and you should be ready to go !\
