@@ -32,11 +32,13 @@ class ApiHost:
                 
             query = Query(received_data)
             if len(query.errors) != 0:
-                return jsonify(query.errors), 400
+                return jsonify({'error': query.errors}), 400
             
             if self.model != query.model:
                 self.model = create_model(query)
 
+            if self.model is None:
+                return jsonify({'error': 'Model not found'}), 400
             answer = self.model.generate_answer(query)
 
             return jsonify({'answer': answer}), 200

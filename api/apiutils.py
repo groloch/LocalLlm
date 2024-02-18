@@ -18,11 +18,11 @@ class _ModelWrapper:
         pass
 
 class ModelInput:
-    def __init__(self, inputs: str | dict) -> None:
+    def __init__(self, inputs: str | list) -> None:
         if isinstance(inputs, str):
             self.type = 'completion'
             self.content = inputs
-        if isinstance(inputs, dict):
+        if isinstance(inputs, list):
             self.type = 'chat'
             self.content = inputs
     
@@ -30,9 +30,6 @@ class ModelInput:
         return len(model_path) == 2 and \
                self.repo_id == model_path[0] and \
                self.file_name == model_path[1]
-    
-    def __ne__(self, model_path: tuple):
-        return not self.__eq__(model_path)
 
 
 class Query:
