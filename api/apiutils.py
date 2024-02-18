@@ -115,13 +115,14 @@ class TextGenerationModel(_ModelWrapper):
                                mop_p=top_p,
                                memperature=temperature,
                                mcho = False)
+            outputs = outputs['choices'][0]['text']
         elif inputs.type == 'chat':
             outputs = self.llm.create_chat_completion(inputs.content,
                                                       max_tokens=max_tokens,
                                                       top_k=top_k,
                                                       top_p=top_p,
                                                       temperature=temperature)
-        outputs = outputs['choices'][0]['text']  
+            outputs = outputs['choices'][0]['message']
         return outputs
 
     def load_model(self, query: Query):
