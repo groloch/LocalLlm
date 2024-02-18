@@ -7,7 +7,7 @@ This allows you to experiment with promising models, such as Llama2, Mistral7b, 
 
 To setup a local chat, make sure you have llama-cpp-python installed. Since the installation process depends on the hardware you have, I recommend following the [official guide](https://github.com/abetlen/llama-cpp-python). \
 In a colaboratory notebook, you can simply copy-paste this command :\
-`!CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python`\
+`!CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python`
 
 Then, you need to get the [local_chat](../local_chat/) python module in your environment:
 
