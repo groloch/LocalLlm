@@ -30,12 +30,26 @@ class ModelInput:
         return len(model_path) == 2 and \
                self.repo_id == model_path[0] and \
                self.file_name == model_path[1]
+    
+    def __ne__(self, model_path: tuple):
+        return not self.__eq__(model_path)
 
 
 class Query:
     def __init__(self, query_dict: dict) -> None:
         self.errors = []
         self.valid_tasks = ('text_generation', 'none')
+        self.parameters = {
+            'top_k': 10,
+            'top_p': 0.95,
+            'temperature': 1,
+            'max_token': 512
+        }
+        self.options = {
+            'use_gpu': True,
+            'ctx_length': 4096,
+            'chat_format': 'llama-2'
+        }
 
         if 'task' in query_dict:
             self.task = query_dict['task']
@@ -60,22 +74,29 @@ class Query:
         if 'inputs' in query_dict:
             self.model_inputs = ModelInput(query_dict['inputs'])
         
-        if 'generation_kwargs' in query_dict:
-            self.generation_kwargs = query_dict['generation_kwargs']
-        else:
-            self.generation_kwargs = {
-                'do_sample': False,
-                'max_tokens': 512,
-                'temperature': 1
-            }
+        if 'parameters' in query_dict:
+            self.update_parameters(query_dict['parameters'])
         
-        if 'model_kwargs' in query_dict:
-            self.model_kwargs = query_dict['model_kwargs']
-        else:
-            self.model_kwargs = {
-                'use_gpu': True,
-                'ctx_length': 4096
-            }
+        if 'options' in query_dict:
+            self.update_options(query_dict['options'])
+    
+    def update_parameters(self, parameters):
+        if 'max_tokens' in parameters:
+            self.parameters['max_tokens'] = parameters['max_tokens']
+        if 'top_k' in parameters:
+            self.parameters['top_k'] = parameters['top_k']
+        if 'top_p' in parameters:
+            self.parameters['top_p'] = parameters['top_p']
+        if 'temperature' in parameters:
+            self.parameters['temperature'] = parameters['temperature']
+
+    def update_options(self, options):
+        if 'use_gpu' in options:
+            self.options['use_gpu'] = options['use_gpu']
+        if 'ctx_length' in options:
+            self.options['ctx_length'] = options['ctx_length']
+        if 'chat_format' in options:
+            self.options['chat_format'] = options['chat_format']
 
 
 class TextGenerationModel(_ModelWrapper):
@@ -83,11 +104,8 @@ class TextGenerationModel(_ModelWrapper):
         super().__init__(repo_id, file_name)
 
     def generate_answer(self, query: Query):
-        genargs = query.generation_kwargs
-        if not genargs['do_sample']:
-            top_k = 1
-        else:
-            top_k = genargs['top_k']
+        genargs = query.parameters
+        top_k = genargs['top_k']
         top_p = genargs['top_p']
         temperature = genargs['temperature']
         max_tokens = genargs['max_tokens']
@@ -95,28 +113,28 @@ class TextGenerationModel(_ModelWrapper):
 
         if inputs.type == 'completion':
             outputs = self.llm(inputs.content,
-                                 max_tokens=max_tokens,
-                                 top_k=top_k,
-                                 top_p=top_p,
-                                 temperature=temperature,
-                                 echo = False)
+                               max_tokens=max_tokens,
+                               mop_k=top_k,
+                               mop_p=top_p,
+                               memperature=temperature,
+                               mcho = False)
         elif inputs.type == 'chat':
             outputs = self.llm.create_chat_completion(inputs.content,
-                                                        max_tokens=max_tokens,
-                                                        top_k=top_k,
-                                                        top_p=top_p,
-                                                        temperature=temperature,
-                                                        echo=False)
-        outputs = outputs['choices'][0]['text']
+                                                      max_tokens=max_tokens,
+                                                      top_k=top_k,
+                                                      top_p=top_p,
+                                                      temperature=temperature)
+        outputs = outputs['choices'][0]['text']  
         return outputs
 
     def load_model(self, query: Query):
-        if query.model_kwargs['use_gpu']:
+        options = query.options
+        if options['use_gpu']:
             n_gpu_layers = -1
         else:
             n_gpu_layers = 0
-        ctx_length = query.model_kwargs['ctx_length']
-        chat_format = query.model_kwargs['chat_format']
+        ctx_length = options['ctx_length']
+        chat_format = options['chat_format']
 
         self.llm = Llama(self.model_path,
                            n_gpu_layers=n_gpu_layers,
